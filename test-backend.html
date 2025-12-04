@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h2>Backend Connection Test</h2>
+  <div id="results"></div>
+  
+  <script>
+    async function testEndpoint(url, method = 'GET', body = null) {
+      try {
+        const options = { method };
+        if (body) {
+          options.headers = { 'Content-Type': 'application/json' };
+          options.body = JSON.stringify(body);
+        }
+        const response = await fetch(url, options);
+        const data = await response.json();
+        return { url, success: true, data };
+      } catch (error) {
+        return { url, success: false, error: error.message };
+      }
+    }
+    
+    async function runTests() {
+      const tests = [
+        { url: 'https://real-wealthy-1.onrender.com/', method: 'GET' },
+        { url: 'https://real-wealthy-1.onrender.com/health', method: 'GET' },
+        { url: 'https://real-wealthy-1.onrender.com/api/plans', method: 'GET' }
+      ];
+      
+      const resultsDiv = document.getElementById('results');
+      
+      for (const test of tests) {
+        const result = await testEndpoint(test.url, test.method, test.body);
+        const color = result.success ? 'green' : 'red';
+        resultsDiv.innerHTML += `
+          <div style="margin:10px;padding:10px;border:2px solid ${color};">
+            <strong>${test.url}</strong><br>
+            <span style="color:${color}">${result.success ? '✅ SUCCESS' : '❌ FAILED'}</span><br>
+            ${result.success ? JSON.stringify(result.data, null, 2) : result.error}
+          </div>
+        `;
+      }
+    }
+    
+    runTests();
+  </script>
+</body>
+</html>

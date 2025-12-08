@@ -3590,7 +3590,8 @@
         // ==================== RAW WEALTHY FRONTEND v35.0 - 100% BACKEND INTEGRATED ====================
         const app = {
             // ==================== CONFIGURATION ====================
-          API_BASE_URL: (() => {
+         config: {
+            API_BASE_URL: (() => {
     const isLocal = window.location.hostname === 'localhost' || 
                    window.location.hostname === '127.0.0.1';
     const isVercel = window.location.origin.includes('vercel.app');
